@@ -402,3 +402,51 @@ $$
 C(n) & = O(n) + 3 \\ & = O(n).
 \end{split}
 $$
+
+### **divide**
+
+```C
+int tam_blocos = tam_escala/tam_acorde;         <- # = 1
+int **divisoes = malloc(tam_acorde*sizeof(int*)); <- # = 1
+for (int i=0; i < tam_acorde; i++)              <- # = i
+    divisoes[i] = malloc(tam_blocos*sizeof(int));
+
+int final=testaPossibilidades(divisoes, lista_notas, tam_escala, tam_acorde, tam_blocos, nota_dist_min);                     <- O(n)
+freeM(divisoes, tam_acorde);                    <- O(n)
+return final==1 ? false : true;                 <- # = 1
+```
+
+O laço for terá custo O(n), uma vez que se repete n vezes apenas. Assim, como a função apenas possui constantes ou funções com ordem linear, podemos afirmar que $C(n) = O(n).$
+
+### **pExit**
+
+```C
+if (!possivel)
+    printf("N\n");
+else
+    printf("S\n");
+```
+Claramente, temos uma função com custo $C(n) = O(1).$
+
+### **main**
+
+```C
+int tam_escala, tam_acorde;                     <- # = 1
+scanf("%d %d", &tam_escala, &tam_acorde);       <- # = 1
+
+notaDistancia menor_nota;                       <- # = 1
+menor_nota.dist=tam_escala;                     <- # = 1
+
+int *lista_notas=recebeListaNotas(tam_acorde,tam_escala,&menor_nota); <- O(n)
+
+bool resultado=divide(tam_escala,tam_acorde,lista_notas,menor_nota.nota); <- O(n)
+pExit(resultado);                               <- O(1)
+
+free(lista_notas);                              <- # = 1
+
+return 0;                                       <- # = 1
+```
+
+De forma semelhante à função **divide**, temos apenas constantes ou funções com custos lineares. Assim, o custo também será $C(n) = O(n).$
+
+Portanto, podemos afirmar que a **ordem de complexidade do algoritmo completo** é $O(n).$
