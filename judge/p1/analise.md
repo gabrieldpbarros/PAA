@@ -248,7 +248,6 @@ Sabemos que o custo da busca linear é $O(n)$
 
 ### **testaPossibilidades**
 
-Primeiramente, tomamos o tamanho da escala como $M \ | \ M \in \mathbb{N}, \ M > 3$
 
 ```C
 int it=tam_blocos,                      <- # = 1
@@ -265,7 +264,7 @@ while (it--) {                          <- # = it
         lst_index=binSearch(t_lst, nota_dist_min, 0, tam_acorde); <- # = log n (esta linha só se repete uma vez em todo o while loop)
     else
         lst_index=linSearch(t_lst, nota_dist_min, tam_acorde); <- # = (it-1)*Custo da função
-           
+    
     for (int i=0; i < tam_acorde; i++) { <- # = i
         int retiradas=0;                 <- # = 1
         for (int j=0; j < tam_blocos; j++) { <- # = j
@@ -275,7 +274,7 @@ while (it--) {                          <- # = it
                 nota=(nota_dist_min+k)-tam_escala; <- # = 1
             else
                 nota=nota_dist_min+k;        <- # = 1
-                
+            
             blocos[i][j]=nota;               <- # = 1 * j
             k++;                             <- # = 1 * j
 
@@ -307,6 +306,7 @@ while (it--) {                          <- # = it
 }
 return falhas==tam_blocos;                   <- # = 1
 ```
+Primeiramente, tomamos o tamanho da escala como $M \ | \ M \in \mathbb{N}, \ M > 3$.
 
 No pior caso, a divisão ideal será encontrada a partir da segunda iteração, ou seja, o algoritmo não atinge o critério de parada definido em
 
