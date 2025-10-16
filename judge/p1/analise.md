@@ -158,6 +158,8 @@ int main(){
 
 # Análise das funções individuais
 
+Tomando n = quantidade de notas do acorde,
+
 ### **calculaDist**
 
 ```C
@@ -186,9 +188,9 @@ int *lst=malloc(tam_acorde*sizeof(int));    <- # = 1
 for (int i=0; i < tam_acorde; i++) {        <- # = i
     scanf("%d", &lst[i]);                  <- # = i * 1
 
-    if (i) calculaDist(menor_nota, lst, i, tam_escala, false);                      <- # = i * Custo da função
+    if (i) calculaDist(menor_nota,lst,i,tam_escala,false); <- # = i * Custo da função
 }
-calculaDist(menor_nota, lst, tam_acorde - 1, tam_escala, true);                          <- # = 7
+calculaDist(menor_nota,lst,tam_acorde-1,tam_escala,true); <- # = 7
 
 return lst;                                 <- # = 1
 ```
@@ -214,10 +216,10 @@ for (int i=0; i < size; i++)               <- # = i
 free(m);                                   <- # = 1
 ```
 
-De forma semelhante à função anterior, temos
+Tomamos $c \in \mathbb{N^*} | \ c =$ constante que, multiplicada por $n$, nos dá o tamanho da escala. Isso é possível pela própria restrição do exercício, que afirma que o tamanho da escala é um múltiplo do tamanho do acorde. De forma semelhante à função anterior, temos
 
 $$
-C(n) = \sum_{i=0}^{n-1} 1 = n - 1,
+C(n) = 1 + \sum_{i=0}^{c(n-1)} 1 = c(n - 1) + 1 = cn - c + 1.
 $$
 
 que nos dá o custo $C(n) = O(n)$.
@@ -229,10 +231,10 @@ for (int i=0; i < size; i++)               <- # = i
     l1[i] = l2[i];                         <- # = i * 1
 ```
 
-Temos
+Tomando $c$ igual à função anterior, temos
 
 $$
-C(n) = \sum_{i=0}^{n-1} 1 = n - 1.
+C(n) = \sum_{i=0}^{c(n-1)} 1 = c(n - 1) = cn - c.
 $$
 
 Logo, $C(n) = O(n)$.
@@ -249,8 +251,7 @@ if (start<=end) {
 }
 ```
 
-Sabemos que o custo da busca binária é $O(log n)$
-
+Sabemos que o custo da busca binária é $O(log \ n)$
 ### **linSearch**
 
 ```C
@@ -260,53 +261,144 @@ for (int i=0; i < size; i++)
 
 Sabemos que o custo da busca linear é $O(n)$
 
-## **testaPossibilidades**
+### **testaPossibilidades**
+
+Primeiramente, tomamos o tamanho da escala como $M \ | \ M \in \mathbb{N}, \ M > 3$
+
 ```C
-int it=tam_blocos,
-    falhas=0;
+int it=tam_blocos,                      <- # = 1
+    falhas=0;                           <- # = 1
 
-// Repete um número de vezes igual ao total de possibilidades de divisão
-while (it--) {
-    int *t_lst = malloc(tam_acorde * sizeof(int)); // Criamos uma lista que vai ser alterada a fim de acompanhar quais notas já foram inseridas em um bloco
-    int k=0,
-        lst_index;
+while (it--) {                          <- # = it
+    int *t_lst=malloc(tam_acorde*sizeof(int)); <- # = 1
+    int k=0,                            <- # = 1
+        lst_index;                      <- # = 1
 
-    copiaLista(t_lst, lista_notas, tam_acorde);
+    copiaLista(t_lst,lista_notas,tam_acorde); <- # = laço * Custo da função
         
-    if (falhas==0) lst_index = binSearch(t_lst, nota_dist_min, 0, tam_acorde);
-    else lst_index=linSearch(t_lst, nota_dist_min, tam_acorde);
+    if (falhas==0)                      <- # = 1
+        lst_index=binSearch(t_lst, nota_dist_min, 0, tam_acorde); <- # = log n (esta linha só se repete uma vez em todo o while loop)
+    else
+        lst_index=linSearch(t_lst, nota_dist_min, tam_acorde); <- # = (it-1)*Custo da função
            
-    for (int i=0; i < tam_acorde; i++) { // Máximo de divisões que devem ser feitas
-        int retiradas=0;
-        for (int j=0; j < tam_blocos; j++) { // Quantidade de notas que cabem em uma divisão
-            int nota;
-            // Correção caso cheguemos ao fim da escala
-            if (nota_dist_min+k>=tam_escala) nota=(nota_dist_min+k)-tam_escala; 
-            else nota=nota_dist_min+k;
+    for (int i=0; i < tam_acorde; i++) { <- # = i
+        int retiradas=0;                 <- # = 1
+        for (int j=0; j < tam_blocos; j++) { <- # = j
+            int nota;                        <- # = 1 * j
+
+            if (nota_dist_min+k>=tam_escala) <- # = 1 * j
+                nota=(nota_dist_min+k)-tam_escala; <- # = 1
+            else
+                nota=nota_dist_min+k;        <- # = 1
                 
-            blocos[i][j]=nota;
-            k++; // Vai para a próxima nota
+            blocos[i][j]=nota;               <- # = 1 * j
+            k++;                             <- # = 1 * j
 
-            if (blocos[i][j]==t_lst[lst_index]) {
-                retiradas++;
-                if (retiradas > 1) break; // Sai do loop antes de atualizar o índice
+            if (blocos[i][j]==t_lst[lst_index]) { <- # = 1 * j
+                retiradas++;                 <- # = 1
+                if (retiradas > 1)           <- # = 1
+                    break;                   <- # = 1
 
-                lst_index++; 
-                if (lst_index==tam_acorde) lst_index=0;
-                }
+                lst_index++;                 <- # = 1
+                if (lst_index==tam_acorde)   <- # = 1
+                    lst_index=0;             <- # = 1
             }
+        }
 
 
-        if (retiradas==0 || retiradas > 1) {
-            falhas++;
-            break;
+        if (retiradas==0 || retiradas > 1) { <- # = 1 * i
+            falhas++;                        <- # = 1
+            break;                           <- # = 1
         }
     }
-    if (nota_dist_min+1 >= tam_escala) nota_dist_min=0;
-    else nota_dist_min++;
-    if (falhas==0) break;
+    if (nota_dist_min+1>=tam_escala)         <- # = 1 * it
+        nota_dist_min=0;                     <- # = 1
+    else    
+        nota_dist_min++;                     <- # = 1 
+    if (falhas==0)                           <- # = 1 * it
+        break;                               <- # = 1
 
-    free(t_lst);
+    free(t_lst);                             <- # = 1 * it
 }
-return falhas==tam_blocos;
+return falhas==tam_blocos;                   <- # = 1
 ```
+
+No pior caso, a divisão ideal será encontrada a partir da segunda iteração, ou seja, o algoritmo não atinge o critério de parada definido em
+
+```C
+if (falhas==0)
+        break;
+```
+que encerra o laço while na primeira iteração.
+
+A função de custo será dada por
+
+$$
+C(n) = C(it) + 3.
+$$
+
+Como as linhas internas dos laços têm custo constante, logo
+
+$$
+\begin{split}
+C(j) \approx \sum_{j=0}^{\frac{M}{n} - 1} 5 & = 5 \left(\frac{M}{n} - 1\right) \\ & = \frac{5M}{n} - 5,
+\end{split}
+$$
+
+e, assim,
+
+$$
+\begin{split}
+C(i) \approx \sum_{i=0}^{n - 1} 2 + C(j) & \approx (n - 1)\left(\frac{5M}{n} - 5\right) \\ & = 5M - 5n - \frac{5M}{n} + 1.
+\end{split}
+$$
+
+Logo, 
+
+$$
+\begin{split}
+C(it) & \approx O(log \ n) + \sum_{it=0}^{\frac{M}{n} - 1} 7 + O(n) + O(n) + C(i) \\ & = M \left(\frac{5M}{n} - \frac{M}{n^2} + \frac{9}{n} - \frac{2 \cdot O(N)}{n}\right) - 2 \cdot O(n) + 5n.
+\end{split}
+$$
+
+Pela definição do próprio exercício, podemos expressar da seguinte forma
+
+$$
+M = cn,
+$$
+
+como explicamos na análise da fução **freeM**. Substituindo na equação anterior, temos
+
+$$
+\begin{split}
+C(it) & \approx cn \left(\frac{5cn}{n} - \frac{cn}{n^2} + \frac{9}{n} - \frac{2 \cdot O(N)}{n}\right) - 2 \cdot O(n) + 5n \\ & = 5c^2n - c^2 + 9c - 2 \cdot O(n) - 2 \cdot O(n) + 5n.
+\end{split}
+$$
+
+Representando $O(n) = c_kn, \ c_k \in \mathbb{R_+^*}$, podemos afirmar
+
+$$
+5c^2n - c^2 + 9c - 2 \cdot O(n) - 2 \cdot O(n) + 5n = 5c^2n - c^2 + 9c - 2c_0n - 2c_1n + 5n.
+$$
+
+Como $c, c_0$ e $c_1$ são constantes, podemos reescrever da seguinte forma
+
+$$
+5c^2n - c^2 + 9c - 2c_0n - 2c_1n + 5n = c_{k0}n + c_{k1} + c_{k2}n + c_{k3}n + c_{k4}n,
+$$
+
+em que $c_{k0} = 5c^2, \ c_{k1} = 9c - c^2, \ c_{k2} = -2c_0, \ c_{k3} = -2c_1$ e $c_{k4} = 5.$ Assim,
+
+$$
+\begin{split}
+c_{k0}n + c_{k1} + c_{k2}n + c_{k3}n + c_{k4}n & = n(c_{k0} + c_{k2} + c_{k3} + c_{k4}) + c_{k1} \\ & = c_{k5}n + c_{k1},
+\end{split}
+$$
+
+em que $c_{k5} = c_{k0} + c_{k2} + c_{k3} + c_{k4}.$ Pela expressão, podemos intuitivamente afirmar que $C(it) = O(n),$ logo
+
+$$
+\begin{split}
+C(n) & = O(n) + 3 \\ & = O(n).
+\end{split}
+$$
