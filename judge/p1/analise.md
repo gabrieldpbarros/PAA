@@ -219,7 +219,7 @@ free(m);                                   <- # = 1
 Tomamos $c \in \mathbb{N^*} | \ c =$ constante que, multiplicada por $n$, nos dá o tamanho da escala. Isso é possível pela própria restrição do exercício, que afirma que o tamanho da escala é um múltiplo do tamanho do acorde. De forma semelhante à função anterior, temos
 
 $$
-C(n) = 1 + \sum_{i=0}^{c(n-1)} 1 = c(n - 1) + 1 = cn - c + 1.
+C(n) = 1 + \sum_{i=0}^{c(n-1)} 1 = c(n - 1) + 1 = cn - c + 1,
 $$
 
 que nos dá o custo $C(n) = O(n)$.
@@ -252,6 +252,7 @@ if (start<=end) {
 ```
 
 Sabemos que o custo da busca binária é $O(log \ n)$
+
 ### **linSearch**
 
 ```C
