@@ -147,4 +147,4 @@ Portanto, $A_n \Longrightarrow A_{n+1}$, logo provamos o passo indutivo.
 
 ## Conclusão
 
-Considerando que podemos calcular $min(A_n)$ a partir de $A_{n-1}$, podemos concluir que essa verificação ocorre em tempo constante. Portanto, a complexidade do algoritmo vai depender da transformação $T$ que aplicarmos para chegar a $A_n$ a partir de $A_{n-1}$.
+Considerando que podemos calcular $min(A_n)$ a partir de $A_{n-1}$, podemos concluir que essa verificação ocorre em tempo linear. Portanto, a complexidade do algoritmo é, pelo menos, $O(n)$, sendo necessário uma avaliação da transformação $T_n$ para inferir a complexidade final.
